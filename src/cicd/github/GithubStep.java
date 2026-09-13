@@ -13,7 +13,7 @@ public class GithubStep {
     private GithubStep(String name, String action, Map<String, String> parameters, String command) {
         this.name = name;
         this.action = action;
-        this.parameters = parameters;
+        this.parameters = new LinkedHashMap<>(parameters);
         this.command = command;
     }
 
