@@ -13,7 +13,7 @@ public class Main {
         GithubStep setupJava = GithubStep.usingAction("Set up Java", "actions/setup-java@v4", javaParameters);
         GithubStep runTests = GithubStep.runningCommand("Run tests", "mvn test");
 
-        System.out.print(setupJava.toYaml("      "));
-        System.out.print(runTests.toYaml("      "));
+        System.out.print(setupJava.toYaml("    "));
+        System.out.print(runTests.toYaml("    "));
     }
 }

@@ -7,18 +7,18 @@ public class GithubStep {
 
     private final String name;
     private final String action;
-    private final Map<String, String> parametrs;
+    private final Map<String, String> parameters;
     private final String command;
 
-    private GithubStep(String name, String action, Map<String, String> parametrs, String command) {
+    private GithubStep(String name, String action, Map<String, String> parameters, String command) {
         this.name = name;
         this.action = action;
-        this.parametrs = parametrs;
+        this.parameters = parameters;
         this.command = command;
     }
 
-    public static GithubStep usingAction(String name, String action, Map<String, String> parametrs) {
-        return new GithubStep(name, action, parametrs, null);
+    public static GithubStep usingAction(String name, String action, Map<String, String> parameters) {
+        return new GithubStep(name, action, parameters, null);
     }
 
     public static GithubStep runningCommand(String name, String command) {
@@ -31,11 +31,11 @@ public class GithubStep {
 
         if (action != null) {
             yaml.append(indent).append("  uses: ").append(action).append("\n");
-            if (!parametrs.isEmpty()) {
+            if (!parameters.isEmpty()) {
                 yaml.append(indent).append("  with:\n");
-                for (Map.Entry<String, String> parametr : parametrs.entrySet()) {
-                    yaml.append(indent).append("      ").append(parametr.getKey()).append(": ").append(parametr.getValue()
-                ).append("\n");
+                for (Map.Entry<String, String> parametr : parameters.entrySet()) {
+                    yaml.append(indent).append("      ").append(parametr.getKey()).append(": ")
+                            .append(parametr.getValue()).append("\n");
                 }
             }
         } else {
