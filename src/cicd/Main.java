@@ -1,20 +1,25 @@
 package cicd;
 
 import cicd.github.GithubActionsBuilder;
-import cicd.github.GithubActionsConfig;
 import cicd.gitlab.GitlabCiBuilder;
-import cicd.gitlab.GitlabCiConfig;
 
 public class Main {
-    public static void main(String[] args) {
-        GithubActionsBuilder githubBuilder = new GithubActionsBuilder();
-        githubBuilder.named("CI").checkout().setupJava(17).runTests().deploy("prod");
-        GithubActionsConfig config = githubBuilder.build();
-        System.out.println(config.toYaml());
 
+    public static void main(String[] args) {
+        PipelineDirector director = new PipelineDirector();
+
+        GithubActionsBuilder githubBuilder = new GithubActionsBuilder();
         GitlabCiBuilder gitlabBuilder = new GitlabCiBuilder();
-        gitlabBuilder.named("CI").checkout().setupJava(17).runTests().deploy("prod");
-        GitlabCiConfig gitlabConfig = gitlabBuilder.build();
-        System.out.println(gitlabConfig.toYaml());
+
+        director.fullDeployPipeline(githubBuilder);
+        director.fullDeployPipeline(gitlabBuilder);
+
+        printFile(".github/workflows/ci.yml", githubBuilder.build().toYaml());
+        printFile(".gitlab-ci.yml", gitlabBuilder.build().toYaml());
+    }
+
+    private static void printFile(String fileName, String content) {
+        System.out.println(fileName);
+        System.out.println(content);
     }
 }
