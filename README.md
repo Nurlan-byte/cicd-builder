@@ -1,18 +1,40 @@
-## Getting Started
+# CI/CD Pipeline Configuration Generator
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Builder pattern in Java 17. Assignment #1, Software Design Patterns, AITU.
 
-## Folder Structure
+## What it is
 
-The workspace contains two folders by default, where:
+The product is a CI/CD pipeline configuration. It is assembled step by step and
+rendered into two structurally different representations: a GitHub Actions
+workflow (`.github/workflows/ci.yml`) and a GitLab CI file (`.gitlab-ci.yml`).
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+## How to build each representation
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+Both builders accept the same construction steps and produce different products:
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+```java
+GithubActionsBuilder githubBuilder = new GithubActionsBuilder();
+new PipelineDirector().fullDeployPipeline(githubBuilder);
+System.out.println(githubBuilder.build().toYaml());
 
-## Dependency Management
+GitlabCiBuilder gitlabBuilder = new GitlabCiBuilder();
+new PipelineDirector().fullDeployPipeline(gitlabBuilder);
+System.out.println(gitlabBuilder.build().toYaml());
+```
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+Or directly through the fluent API:
+
+```java
+builder.named("CI").checkout().setupJava(17).runTests().deploy("prod");
+```
+
+## How to run
+
+Requires JDK 17. No external dependencies.
+
+```bash
+javac -d bin src/cicd/*.java src/cicd/github/*.java src/cicd/gitlab/*.java
+java -cp bin cicd.Main
+```
+
+In VS Code: open `src/cicd/Main.java` and press Run.
