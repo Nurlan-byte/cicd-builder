@@ -27,6 +27,8 @@ public class GitlabCiBuilder implements PipelineBuilder {
 
     @Override
     public PipelineBuilder checkout() {
+        // GitLab Runner clones the repository before every job, so no explicit job is
+        // needed.
         return this;
     }
 
